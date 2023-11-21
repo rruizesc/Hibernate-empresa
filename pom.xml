@@ -3,7 +3,19 @@
   <groupId>GestionDepartamentoEmpleados</groupId>
   <artifactId>DepartamentoEmpleados</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>GestionEmpresa</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <name>GestionEmpresa</name>
   	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
