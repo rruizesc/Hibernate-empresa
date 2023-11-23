@@ -9,7 +9,6 @@ import model.Empleado;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
 
 public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
     @Override
@@ -35,8 +34,14 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
     }
 
     @Override
-    public List<Empleado> findByName(String name) {
-        return null;
+    public List<Empleado> findByName(String nombre) {
+        HibernateManager hb = HibernateManager.getInstance();
+        hb.open();
+        TypedQuery<Empleado> query = hb.getManager().createQuery("SELECT e FROM Empleado e WHERE e.nombre = :nombre", Empleado.class);
+        query.setParameter("nombre", nombre);
+        List<Empleado> lista = query.getResultList();
+        hb.close();
+        return lista;
     }
 
     @Override

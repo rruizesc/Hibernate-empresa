@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "empleados")
+@NamedQueries({
+		@NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e")
+})
 public class Empleado {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY )
@@ -83,4 +86,7 @@ public class Empleado {
 		return sb.toString();
 	}
 
+	public boolean isNull() {
+		return false;
+	}
 }

@@ -3,15 +3,7 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Builder;
@@ -24,8 +16,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "empleado")
 
+
 @Entity
 @Table(name = "proyectos")
+@NamedQueries({
+		@NamedQuery(name = "Proyecto.findAll", query = "SELECT p FROM Proyecto p")
+})
+
+
 public class Proyecto {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY )
@@ -44,6 +42,14 @@ public class Proyecto {
 	public Proyecto(Integer id, String nombre) {
 		setId(id);
 		setNombre(nombre);
+	}
+
+	public Object show() {
+		return false;
+	}
+
+	public boolean isNull() {
+		return false;
 	}
 	
 	

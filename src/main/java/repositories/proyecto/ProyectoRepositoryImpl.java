@@ -35,8 +35,14 @@ public class ProyectoRepositoryImpl  implements ProyectoRepository {
     }
 
     @Override
-    public List<Proyecto> findByName(String name) {
-        return null;
+    public List<Proyecto> findByName(String nombre) {
+        HibernateManager hb = HibernateManager.getInstance();
+        hb.open();
+        TypedQuery<Proyecto> query = hb.getManager().createQuery("SELECT p FROM Proyecto p WHERE p.nombre = :nombre", Proyecto.class);
+        query.setParameter("nombre", nombre);
+        List<Proyecto> lista = query.getResultList();
+        hb.close();
+        return lista;
     }
 
     @Override

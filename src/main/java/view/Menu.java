@@ -1,19 +1,10 @@
 package view;
 
-import java.time.LocalDate;
 import java.util.Scanner;
 
-import controlador.Controlador;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-
-import model.Departamento;
-import model.Empleado;
-import model.Proyecto;
-
-import static menu.menuDepartamento.menuDepartamento;
-import static menu.menuEmpleado.menuEmpleado;
-import static menu.menuProyecto.menuProyecto;
+import static view.menuDepartamento.menuDepartamento;
+import static view.menuEmpleado.menuEmpleado;
+import static view.menuProyecto.menuProyecto;
 
 public class Menu {
 	

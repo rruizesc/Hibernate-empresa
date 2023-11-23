@@ -1,19 +1,17 @@
-package menu;
+package view;
 
 import controlador.DepartamentoController;
 import controlador.EmpleadoController;
 import io.IO;
 import model.Departamento;
-import model.Empleado;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public class menuDepartamento {
 
     public static void menuDepartamento() {
-        //Aquí va el controlador de proyecto:
+
         DepartamentoController dcontroler = new DepartamentoController();
         System.out.println("Bienvenido al menú de Empleado");
         System.out.println("¿Qué quieres hacer?");

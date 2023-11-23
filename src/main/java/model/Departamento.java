@@ -16,6 +16,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "departamentos")
+@NamedQueries({
+		@NamedQuery(name = "Departamento.findAll", query = "SELECT d FROM Departamento d")
+})
 public class Departamento {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY )

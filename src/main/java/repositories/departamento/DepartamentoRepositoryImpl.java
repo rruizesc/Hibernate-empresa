@@ -20,7 +20,7 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
         //logger.info("findAll()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
-        TypedQuery<Departamento> query = hb.getManager().createNamedQuery("Departamendo", Departamento.class);
+        TypedQuery<Departamento> query = hb.getManager().createNamedQuery("Departamento.findAll", Departamento.class);
         List<Departamento> list = query.getResultList();
         hb.close();
         return list;
@@ -42,7 +42,7 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
         //logger.info("findByName()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
-        TypedQuery<Departamento> query = hb.getManager().createQuery("SELECT e FROM Departamento e WHERE e.nombre = :nombre", Departamento.class);
+        TypedQuery<Departamento> query = hb.getManager().createQuery("SELECT d FROM Departamento d WHERE d.nombre = :nombre", Departamento.class);
         query.setParameter("nombre", nombre);
         List<Departamento> list = query.getResultList();
         hb.close();

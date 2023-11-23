@@ -248,6 +248,12 @@ public class IO {
 		return sc.nextLine();
 	}
 
+	public static Double readDoubleOrNull() {
+	}
+
+	public static LocalDate readLocalDateOrNull() {
+	}
+
 	/*
 	 * Métodos para idioma español
 	 *
