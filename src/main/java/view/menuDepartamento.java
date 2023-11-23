@@ -4,6 +4,7 @@ import controlador.DepartamentoController;
 import controlador.EmpleadoController;
 import io.IO;
 import model.Departamento;
+import model.Empleado;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class menuDepartamento {
                 "buscar por Nombre",
                 "moDificar",
                 "Añadir",
+                "añadir Jefe",
                 "Eliminar",
                 "Salir"
         );
@@ -43,6 +45,8 @@ public class menuDepartamento {
                 case 'A':
                     anadir(dcontroler);
                     break;
+                case 'J':
+                    addJefe(dcontroler);
                 case 'E':
                     borrar(dcontroler);
                     break;
@@ -54,7 +58,8 @@ public class menuDepartamento {
             }
         }
     }
-private static void mostrar(DepartamentoController dcontroler){
+
+    private static void mostrar(DepartamentoController dcontroler){
           for (Departamento e : dcontroler.getDepartamento()) {
                IO.println(e.show());
            }
@@ -107,7 +112,55 @@ private static void mostrar(DepartamentoController dcontroler){
 		Departamento anadido = dcontroler.crearDepartamento(d);
 		IO.println(anadido.isNull() ? "Añadido" : "No se ha podido añadir");
 	}
-	 private static void borrar(DepartamentoController dcontroler) {
+    private static void addJefe(DepartamentoController dcontroler) {
+        IO.print("Código del departamento al que desea agregar un jefe? ");
+        Integer idDepartamento = IO.readInt();
+
+        Optional<Departamento> optionalDepartamento = dcontroler.getDepartamentoId(idDepartamento);
+        if (optionalDepartamento.isEmpty()) {
+            IO.println("No se ha encontrado el departamento.");
+            return;
+        }
+
+        Departamento departamento = optionalDepartamento.get();
+
+        EmpleadoController empleadoController = new EmpleadoController();
+        List<Empleado> empleadosDisponibles = empleadoController.getEmpleadosSinDepartamento();
+
+        if (empleadosDisponibles.isEmpty()) {
+            IO.println("No hay empleados disponibles para asignar como jefe.");
+            return;
+        }
+
+        IO.println("Lista de empleados disponibles para asignar como jefe:");
+        for (Empleado empleado : empleadosDisponibles) {
+            IO.println(empleado.show());
+        }
+
+        IO.print("Ingrese el ID del empleado que desea asignar como jefe: ");
+        Integer idJefe = IO.readInt();
+
+        Optional<Empleado> optionalJefe = empleadosDisponibles.stream()
+                .filter(empleado -> empleado.getId().equals(idJefe))
+                .findFirst();
+
+        if (optionalJefe.isEmpty()) {
+            IO.println("Empleado no encontrado.");
+            return;
+        }
+
+        Empleado jefe = optionalJefe.get();
+        departamento.addJefe(jefe);
+        Departamento departamentoConJefe = dcontroler.updateDepartamento(departamento);
+
+        if (departamentoConJefe.isNull()) {
+            IO.println("Se ha asignado el jefe al departamento correctamente.");
+        } else {
+            IO.println("No se ha podido asignar el jefe al departamento.");
+        }
+    }
+
+    private static void borrar(DepartamentoController dcontroler) {
 		IO.print("Código ? ");
 		Integer id = IO.readInt();
 		Departamento e = (Departamento) dcontroler.getDepartamentoId(id).get();

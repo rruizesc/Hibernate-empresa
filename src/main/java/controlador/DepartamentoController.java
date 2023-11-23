@@ -37,7 +37,7 @@ public class DepartamentoController {
         return departamentoRepository.findById(id);
     }
 
-    public Departamento updateTenista(Departamento departamento) {
+    public Departamento updateDepartamento(Departamento departamento) {
         logger.info("Actualizando Departamento con id: " + departamento.getId());
         return departamentoRepository.save(departamento);
     }

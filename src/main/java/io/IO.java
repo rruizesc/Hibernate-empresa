@@ -249,19 +249,30 @@ public class IO {
 	}
 
 	public static Double readDoubleOrNull() {
+		String input = sc.nextLine();
+		if (input.isBlank()){
+			return null;
+		}
+		try{
+			return Double.parseDouble(input);
+		} catch (NumberFormatException e){
+			System.out.println("ERROR: No es de tipo double ?");
+			return readDoubleOrNull();
+		}
 	}
 
 	public static LocalDate readLocalDateOrNull() {
+		String input = sc.nextLine();
+		if (input.isBlank()){
+			return  null;
+		}
+		try {
+			return LocalDate.parse(input);
+		} catch (DateTimeParseException e){
+			System.err.print("ERROR: No es de tipo LocalDate ? ");
+			return readLocalDateOrNull();
+		}
 	}
 
-	/*
-	 * Métodos para idioma español
-	 *
-	 * static public void escribir(Object o) { println(o); }
-	 * static public void mostrar(Object o) { println(o); }
-	 * static public int leerEntero() { return readInt(); }
-	 * static public double leerDecimal() { return readDouble(); }
-	 * static public char leerCaracter() { return readChar(); }
-	 */
 
 }

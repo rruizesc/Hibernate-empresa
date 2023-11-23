@@ -4,6 +4,7 @@ import io.IO;
 import controlador.EmpleadoController;
 import model.Departamento;
 import model.Empleado;
+import model.Proyecto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,6 +22,8 @@ public class menuEmpleado {
                 "buscar por Nombre",
                 "moDificar",
                 "Añadir",
+                "añadir a deparTamento",
+                "añadir a Proyecto",
                 "Eliminar",
                 "Salir"
         );
@@ -45,6 +48,12 @@ public class menuEmpleado {
                     break;
                 case 'E':
                     eliminar(econtroler);
+                    break;
+                case 'T':
+                    addDepartamento(econtroler);
+                    break;
+                case 'P':
+                    addProyecto(econtroler);
                     break;
                 case 'S':
                     return;
@@ -106,7 +115,7 @@ public class menuEmpleado {
         if (departamento != null) {
             emp.get().setDepartamento(Departamento.builder().id(departamento).build());
         }
-        Empleado anadido = econtroler.createEmpleado(emp.get());
+        Empleado anadido = econtroler.updateEmpleado(emp.get());
         IO.println(anadido.isNull() ? "Modificado" : "No se ha podido modificar");
     }
 
@@ -124,6 +133,58 @@ public class menuEmpleado {
                 .build();
         Empleado anadido = econtroler.createEmpleado(e);
         IO.println(anadido.isNull() ? "Añadido" : "No se ha podido añadir");
+    }
+
+    private static void addDepartamento(EmpleadoController econtroler) {
+        IO.print("Código del empleado al que quieres añadir departamento ? ");
+        Integer idEmpleado = IO.readInt();
+        Optional<Empleado> empleadoOpt = EmpleadoController.getEmpleadoId(idEmpleado);
+
+        if (empleadoOpt.isEmpty()) {
+            IO.println("Empleado no encontrado");
+            return;
+        }
+
+        Empleado empleado = empleadoOpt.get();
+
+        IO.print("Código del departamento a añadir ? ");
+        Integer idDepartamento = IO.readInt();
+        Departamento departamento = Departamento.builder().id(idDepartamento).build();
+
+        empleado.addDepartamento(departamento);
+        Empleado empleadoActualizado = econtroler.updateEmpleado(empleado);
+
+        if (empleadoActualizado.isNull()) {
+            IO.println("Departamento añadido al empleado");
+        } else {
+            IO.println("No se ha podido añadir el departamento al empleado");
+        }
+    }
+
+    private static void addProyecto(EmpleadoController econtroler) {
+        IO.print("Código del empleado al que quieres añadir proyecto ? ");
+        Integer idEmpleado = IO.readInt();
+        Optional<Empleado> empleadoOpt = EmpleadoController.getEmpleadoId(idEmpleado);
+
+        if (empleadoOpt.isEmpty()) {
+            IO.println("Empleado no encontrado");
+            return;
+        }
+
+        Empleado empleado = empleadoOpt.get();
+
+        IO.print("Código del proyecto a añadir ? ");
+        Integer idProyecto = IO.readInt();
+        Proyecto proyecto = Proyecto.builder().id(idProyecto).build();
+
+        empleado.addProyecto(proyecto);
+        Empleado empleadoActualizado = econtroler.updateEmpleado(empleado);
+
+        if (empleadoActualizado.isNull()) {
+            IO.println("Proyecto añadido al empleado");
+        } else {
+            IO.println("No se ha podido añadir el proyecto al empleado");
+        }
     }
 
     private static void eliminar(EmpleadoController econtroler) {

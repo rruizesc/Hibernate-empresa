@@ -7,6 +7,7 @@ import model.Empleado;
 import repositories.empleado.EmpleadoRepository;
 import repositories.empleado.EmpleadoRepositoryImpl;
 
+
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -14,8 +15,9 @@ import java.util.logging.Logger;
 @NoArgsConstructor(force = true)
 public class EmpleadoController {
 
-    private final Logger logger = Logger.getLogger(EmpleadoController.class.getName());
-    private EmpleadoRepository empleadoRepository = new EmpleadoRepositoryImpl();
+    private static final Logger logger = Logger.getLogger(EmpleadoController.class.getName());
+    private static EmpleadoRepository empleadoRepository = new EmpleadoRepositoryImpl();
+    EmpleadoRepositoryImpl empRepositoryImpl = new EmpleadoRepositoryImpl();
 
     public List<Empleado> getEmpleados(){
         logger.info("Obteniendo Empleados");
@@ -27,12 +29,18 @@ public class EmpleadoController {
         return empleadoRepository.findByName(nombre);
     }
 
+    public List<Empleado> getEmpleadosSinDepartamento() {
+        logger.info("Obteniendo Empleados sin departamento asignado");
+        return empRepositoryImpl.findEmpleadosSinDepartamento();
+    }
+
+
     public Empleado createEmpleado(Empleado empleado) {
         logger.info("Creando Empleado");
         return empleadoRepository.save(empleado);
     }
 
-    public Optional<Empleado> getEmpleadoId(Integer id) {
+    public static Optional<Empleado> getEmpleadoId(Integer id) {
         logger.info("Obteniendo Empleado con id: " + id);
         return empleadoRepository.findById(id);
     }

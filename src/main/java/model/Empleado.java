@@ -87,6 +87,6 @@ public class Empleado {
 	}
 
 	public boolean isNull() {
-		return false;
+		return this == null;
 	}
 }

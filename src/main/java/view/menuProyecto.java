@@ -1,9 +1,11 @@
 package view;
 
 
+import controlador.EmpleadoController;
 import controlador.ProyectoController;
 import io.IO;
 import model.Departamento;
+import model.Empleado;
 import model.Proyecto;
 
 import java.time.LocalDate;
@@ -12,7 +14,7 @@ import java.util.Optional;
 
 public class menuProyecto {
     public static void menuProyecto() {
-        //Aquí va el controlador de proyecto:
+
         ProyectoController pcontroler = new ProyectoController();
         System.out.println("Bienvenido al menú de Proyecto");
         System.out.println("¿Qué quieres hacer?");
@@ -22,6 +24,7 @@ public class menuProyecto {
                 "buscar por Nombre",
                 "moDificar",
                 "Añadir",
+                "añadiR empleado",
                 "Eliminar",
                 "Salir"
         );
@@ -32,7 +35,7 @@ public class menuProyecto {
                 case 'M':
                     mostrar(pcontroler);
                     break;
-                case'C':
+                case 'C':
 					buscarPorCodigo(pcontroler);
                     break;
                 case 'N':
@@ -47,6 +50,8 @@ public class menuProyecto {
                 case 'E':
                     eliminar(pcontroler);
                     break;
+                case 'R':
+                    empleadoAdd(pcontroler);
                 case 'S':
                     return;
                 default:
@@ -55,51 +60,103 @@ public class menuProyecto {
             }
         }
     }
-    private static void mostrar(ProyectoController dcontroler){
-           for (Proyecto p : dcontroler.getProyectos()) {
+    private static void mostrar(ProyectoController pcontroler){
+           for (Proyecto p : pcontroler.getProyectos()) {
                IO.println(p.show());
            }
      }
 
-    private static void buscarPorCodigo(ProyectoController dcontroler) {
+    private static void buscarPorCodigo(ProyectoController pcontroler) {
             IO.print("Código ? ");
              Integer id = IO.readInt();
-             Proyecto p = dcontroler.getProyectoId(id).get();
+             Proyecto p = pcontroler.getProyectoId(id).get();
              if (p != null){
                    IO.println(p.show());
              }
      }
 
-     private static void buscarPorNombre(ProyectoController dcontroler) {
+     private static void buscarPorNombre(ProyectoController pcontroler) {
 		IO.print("El nombre empieza por ? ");
 		String inicio = IO.readString();
-		for (Proyecto e : dcontroler.getProyectosByNombre(inicio)) {
+		for (Proyecto e : pcontroler.getProyectosByNombre(inicio)) {
 			IO.println(e.show());
 		}
 	}
 
-    private static void modificar(ProyectoController dcontroler) {
+    private static void modificar(ProyectoController pcontroler) {
+        IO.print("Código del proyecto a modificar? ");
+        Integer id = IO.readInt();
+        Optional<Proyecto> proyectoOptional = pcontroler.getProyectoId(id);
+        if (proyectoOptional.isPresent()){
+            Proyecto proyecto = proyectoOptional.get();
+            IO.println("Proyecto encontrado: " + proyecto.getNombre());
+            IO.print("Nuevo nombre (dejar vacío si no se quiere cambiar: ");
+            String nuevoNombre = IO.readString().trim();
+            if (!nuevoNombre.isEmpty()){
+                proyecto.setNombre(nuevoNombre);
+                pcontroler.updateProyecto(proyecto);
+                IO.println("Proyecto modificado exitosamente.");
+            }else {
+                IO.println("No se realizaron cambios en el nombre del proyecto. ");
+            }
+        } else {
+            IO.println("Proyecto no encontrado.");
+        }
+	}
+	private static void crear(ProyectoController pcontroler) {
+        IO.print("Nombre del nuevo proyecto: ");
+        String nombre = IO.readString().trim();
+        if (!nombre.isEmpty()) {
+            Proyecto nuevoProyecto = new Proyecto();
+            nuevoProyecto.setNombre(nombre);
+            Proyecto creado = pcontroler.updateProyecto(nuevoProyecto);
+            if (!creado.isNull()) {
+                IO.println("Nuevo proyecto creado exitosamente.");
+            } else {
+                IO.println("No se pudo crear el proyecto.");
+            }
+        } else {
+            IO.println("El nombre del proyecto no puede estar vacío.");
+        }
+	}
 
-	}
-	private static void crear(ProyectoController dcontroler) {
-		IO.print("Nombre ? ");
-		String nombre = IO.readString();
-		IO.print("Salario ? ");
-		Double salario = IO.readDoubleOrNull();
-		IO.print("Nacido (aaaa-mm-dd) ? ");
-		LocalDate nacido = IO.readLocalDateOrNull();
-		Proyecto p = Proyecto.builder()
-				.nombre(nombre)
-				.build();
-		Proyecto anadido = dcontroler.createProyecto(p);
-		IO.println(anadido.isNull() ? "Añadido" : "No se ha podido añadir");
-	}
-	private static void eliminar(ProyectoController dcontroler) {
-		IO.print("Código ? ");
-		Integer id = IO.readInt();
-		Proyecto p = (Proyecto) dcontroler.getProyectoId(id).get();
-		boolean borrado = dcontroler.deleteProyecto(p);
-		IO.println(borrado ? "Borrado" : "No se ha podido borrar");
+    private static void empleadoAdd(ProyectoController pcontroler){
+        IO.print("Código del proyecto al que desea agregar un empleado ");
+        int idProyecto = IO.readInt();
+        Optional<Proyecto> proyectoOptional = pcontroler.getProyectoId(idProyecto);
+
+        if (proyectoOptional.isPresent()){
+            Proyecto proyecto = proyectoOptional.get();
+
+            IO.print("Código del empleado que desar asociar: ");
+            int idEmpleado = IO.readInt();
+            Optional<Empleado> empleadoOptional = EmpleadoController.getEmpleadoId(idEmpleado);
+
+            if (empleadoOptional.isPresent()){
+                Empleado empleado = empleadoOptional.get();
+                proyecto.addEmpleado(empleado);
+
+                pcontroler.updateProyecto(proyecto);
+
+                IO.print("Empleado agregado al proyecto exitosamente.");
+            } else {
+                IO.print("Empleado no encontrado.");
+            }
+        } else {
+            IO.print("Proyecto no encontrado.");
+        }
+    }
+	private static void eliminar(ProyectoController pcontroler) {
+        IO.print("Código del proyecto a eliminar? ");
+        Integer id = IO.readInt();
+        Optional<Proyecto> proyectoOptional = pcontroler.getProyectoId(id);
+        if (proyectoOptional.isPresent()) {
+            Proyecto proyecto = proyectoOptional.get();
+            boolean borrado = pcontroler.deleteProyecto(proyecto);
+            IO.println(borrado ? "Proyecto borrado exitosamente." : "No se ha podido borrar el proyecto.");
+        } else {
+            IO.println("Proyecto no encontrado.");
+        }
 	}
 
 

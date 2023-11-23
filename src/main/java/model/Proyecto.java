@@ -45,18 +45,29 @@ public class Proyecto {
 	}
 
 	public Object show() {
-		return false;
+		if (id == 0) {
+			return "no hay proyecto";
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%2d:%-20s", id, nombre));
+		if (empleado == null || empleado.isEmpty()){
+			sb.append("sin empleados");
+		} else {
+			sb.append("Empleados asignados: ");
+			for (Empleado e : empleado){
+				sb.append(String.format("[%2d:%s] ", e.getId(), e.getNombre()));
+			}
+		}
+		return sb.toString();
 	}
 
 	public boolean isNull() {
-		return false;
+		return this == null;
 	}
 	
-	
-	/*
 	public void addEmpleado(Empleado e) {
 		 e.getProyecto().add(this);
 		 this.getEmpleado().add(e);
 	}
-	*/
+
 }

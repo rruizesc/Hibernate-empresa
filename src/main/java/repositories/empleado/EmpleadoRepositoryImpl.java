@@ -44,6 +44,17 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
         return lista;
     }
 
+
+    public Optional<Empleado> findEmpleadosSinDepartamento() {
+        HibernateManager hb = HibernateManager.getInstance();
+        hb.open();
+        TypedQuery<Empleado> query = hb.getManager().createQuery(
+                "SELECT e FROM Empleado e WHERE e.departamento IS NULL", Empleado.class);
+        List<Empleado> empleadosSinDepartamento = query.getResultList();
+        hb.close();
+        return Optional.ofNullable((Empleado) empleadosSinDepartamento);
+    }
+
     @Override
     public Empleado save(Empleado entity) {
         //logger.info("save()");
