@@ -17,7 +17,7 @@ public class ProyectoRepositoryImpl  implements ProyectoRepository {
         //logger.info("findAll()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
-        TypedQuery<Proyecto> query = hb.getManager().createNamedQuery("Raqueta.findAll", Proyecto.class);
+        TypedQuery<Proyecto> query = hb.getManager().createNamedQuery("Proyecto.findAll", Proyecto.class);
         List<Proyecto> list = query.getResultList();
         hb.close();
         return list;
@@ -32,6 +32,11 @@ public class ProyectoRepositoryImpl  implements ProyectoRepository {
         Optional<Proyecto> proyecto = Optional.ofNullable(hb.getManager().find(Proyecto.class, id));
         hb.close();
         return proyecto;
+    }
+
+    @Override
+    public List<Proyecto> findByName(String name) {
+        return null;
     }
 
     @Override

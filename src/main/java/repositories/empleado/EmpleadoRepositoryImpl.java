@@ -4,7 +4,6 @@ import db.HibernateManager;
 import exceptions.DepartamentoException;
 import exceptions.EmpleadoException;
 import jakarta.persistence.TypedQuery;
-import model.Departamento;
 import model.Empleado;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
         //logger.info("findAll()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
-        TypedQuery<Empleado> query = hb.getManager().createNamedQuery("Raqueta.findAll", Empleado.class);
+        TypedQuery<Empleado> query = hb.getManager().createNamedQuery("Empleado.findAll", Empleado.class);
         List<Empleado> list = query.getResultList();
         hb.close();
         return list;
@@ -33,6 +32,11 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
         Optional<Empleado> empleado = Optional.ofNullable(hb.getManager().find(Empleado.class, id));
         hb.close();
         return empleado;
+    }
+
+    @Override
+    public List<Empleado> findByName(String name) {
+        return null;
     }
 
     @Override
