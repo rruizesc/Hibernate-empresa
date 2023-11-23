@@ -9,12 +9,12 @@ import model.Proyecto;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
+
 
 public class ProyectoRepositoryImpl  implements ProyectoRepository {
     @Override
     public List findAll() {
-        logger.info("findAll()");
+        //logger.info("findAll()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         TypedQuery<Proyecto> query = hb.getManager().createNamedQuery("Raqueta.findAll", Proyecto.class);
@@ -26,7 +26,7 @@ public class ProyectoRepositoryImpl  implements ProyectoRepository {
 
     @Override
     public Optional<Proyecto> findById(Integer id) {
-        logger.info("findById()");
+        //logger.info("findById()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         Optional<Proyecto> proyecto = Optional.ofNullable(hb.getManager().find(Proyecto.class, id));
@@ -36,7 +36,7 @@ public class ProyectoRepositoryImpl  implements ProyectoRepository {
 
     @Override
     public Proyecto save(Proyecto entity) {
-        logger.info("save()");
+        //logger.info("save()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         hb.getTransaction().begin();
@@ -59,7 +59,7 @@ public class ProyectoRepositoryImpl  implements ProyectoRepository {
 
     @Override
     public Boolean delete(Proyecto entity) {
-        logger.info("delete()");
+        //logger.info("delete()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         try {

@@ -17,12 +17,12 @@ public class DepartamentoController {
     private final Logger logger = Logger.getLogger(DepartamentoController.class.getName());
     private  DepartamentoRepository departamentoRepository = new DepartamentoRepositoryImpl();
 
-    public List<Departamento> getDepartamentos(){
+    public List<Departamento> getDepartamento(){
         logger.info("Obteniendo Departamentos");
         return departamentoRepository.findAll();
     }
 
-    public List<Departamento> getDepartamentosByNombre(String nombre){
+    public List<Departamento> getDepartamentoByNombre(String nombre){
         logger.info("Obteniendo Departamentos que empiezan por " + nombre);
         return departamentoRepository.findByName(nombre);
     }

@@ -12,7 +12,7 @@
         
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
-            <property name="hibernate.connection.url" value="jdbc:mariadb://172.31.16.1:3301/empresa2"/>
+            <property name="hibernate.connection.url" value="jdbc:mariadb://localhost:7706/empresa"/>
             <property name="hibernate.connection.username" value="root"/>
             <property name="hibernate.connection.password" value="toor"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

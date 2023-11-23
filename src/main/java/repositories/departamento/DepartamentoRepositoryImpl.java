@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static com.ibm.java.diagnostics.utils.Context.logger;
+
 
 public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
     private final Logger logger = Logger.getLogger(DepartamentoRepositoryImpl.class.getName());
 
     @Override
     public List findAll() {
-        logger.info("findAll()");
+        //logger.info("findAll()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
-        TypedQuery<Departamento> query = hb.getManager().createNamedQuery("Raqueta.findAll", Departamento.class);
+        TypedQuery<Departamento> query = hb.getManager().createNamedQuery("Departamendo", Departamento.class);
         List<Departamento> list = query.getResultList();
         hb.close();
         return list;
@@ -29,7 +29,7 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
 
     @Override
     public Optional<Departamento> findById(Integer id) {
-        logger.info("findById()");
+        //logger.info("findById()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         Optional<Departamento> departamento = Optional.ofNullable(hb.getManager().find(Departamento.class, id));
@@ -39,7 +39,7 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
 
     @Override
     public List<Departamento> findByName(String nombre) {
-        logger.info("findByName()");
+        //logger.info("findByName()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         TypedQuery<Departamento> query = hb.getManager().createQuery("SELECT e FROM Departamento e WHERE e.nombre = :nombre", Departamento.class);
@@ -51,7 +51,7 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
 
     @Override
     public Departamento save(Departamento entity) {
-        logger.info("save()");
+        //logger.info("save()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         hb.getTransaction().begin();
@@ -74,7 +74,7 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
 
     @Override
     public Boolean delete(Departamento entity) {
-        logger.info("delete()");
+        //logger.info("delete()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         try {
@@ -88,7 +88,7 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
             hb.close();
             return true;
         } catch (Exception e) {
-            throw new EmpleadoException("Error al eliminar empleado en dpeartamento");
+            throw new EmpleadoException("Error al eliminar empleado en departamento");
         } finally {
             if (hb.getTransaction().isActive()) {
                 hb.getTransaction().rollback();

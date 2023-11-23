@@ -71,6 +71,10 @@ public class IO {
 		System.out.println(o);
 	}
 
+	static public void printf(String format, Object... objects) {
+		System.out.printf(format, objects);
+	}
+
 	/**
 	 * Lee un valor de tipo byte
 	 * 
@@ -116,6 +120,19 @@ public class IO {
 		}
 	}
 
+	static public Integer readIntOrNull() {
+		while (true) {
+			try {
+				String in = sc.nextLine();
+				if (in.isBlank()) {
+					return null;
+				}
+				return Integer.parseInt(in);
+			} catch (Exception e) {
+				System.err.print("ERROR: No es de tipo int ? ");
+			}
+		}
+	}
 	/**
 	 * Lee un valor de tipo long
 	 * 

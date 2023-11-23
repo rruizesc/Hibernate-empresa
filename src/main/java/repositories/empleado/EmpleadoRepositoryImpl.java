@@ -15,7 +15,7 @@ import static com.ibm.java.diagnostics.utils.Context.logger;
 public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
     @Override
     public List findAll() {
-        logger.info("findAll()");
+        //logger.info("findAll()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         TypedQuery<Empleado> query = hb.getManager().createNamedQuery("Raqueta.findAll", Empleado.class);
@@ -27,7 +27,7 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
 
     @Override
     public Optional<Empleado> findById(Integer id) {
-        logger.info("findById()");
+        //logger.info("findById()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         Optional<Empleado> empleado = Optional.ofNullable(hb.getManager().find(Empleado.class, id));
@@ -37,7 +37,7 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
 
     @Override
     public Empleado save(Empleado entity) {
-        logger.info("save()");
+        //logger.info("save()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         hb.getTransaction().begin();
@@ -60,7 +60,7 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
 
     @Override
     public Boolean delete(Empleado entity) {
-        logger.info("delete()");
+        //logger.info("delete()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         try {
