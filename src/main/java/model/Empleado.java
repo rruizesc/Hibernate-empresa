@@ -39,7 +39,7 @@ public class Empleado {
 	@OneToOne(mappedBy = "jefe")
     private Departamento departamentoJefe;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 		    name = "empleado_proyecto",
 		    joinColumns = @JoinColumn(name = "empleado_id"),
@@ -88,5 +88,10 @@ public class Empleado {
 
 	public boolean isNull() {
 		return this == null;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%2d:%-20s", id, nombre);
 	}
 }

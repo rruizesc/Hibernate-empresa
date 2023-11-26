@@ -110,7 +110,7 @@ public class menuDepartamento {
 		String nombre = IO.readString();
 		Departamento d = Departamento.builder().nombre(nombre).build();
 		Departamento anadido = dcontroler.crearDepartamento(d);
-		IO.println(anadido.isNull() ? "Añadido" : "No se ha podido añadir");
+		IO.println(anadido.isNull() ? "No se ha podido añadir" : "Añadido");
 	}
     private static void addJefe(DepartamentoController dcontroler) {
         IO.print("Código del departamento al que desea agregar un jefe? ");
@@ -163,11 +163,8 @@ public class menuDepartamento {
     private static void borrar(DepartamentoController dcontroler) {
 		IO.print("Código ? ");
 		Integer id = IO.readInt();
-		Departamento e = (Departamento) dcontroler.getDepartamentoId(id).get();
+		Departamento e = dcontroler.getDepartamentoId(id).get();
 		boolean borrado = dcontroler.deleteDepartamento(e);
 		IO.println(borrado ? "Borrado" : "No se ha podido borrar");
 	}
-
-
-
 }

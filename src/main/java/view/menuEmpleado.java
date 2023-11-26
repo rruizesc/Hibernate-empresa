@@ -132,7 +132,7 @@ public class menuEmpleado {
                 .fNacimiento(nacido)
                 .build();
         Empleado anadido = econtroler.createEmpleado(e);
-        IO.println(anadido.isNull() ? "Añadido" : "No se ha podido añadir");
+        IO.println(anadido.isNull() ? "No se ha podido añadir" : "Añadido");
     }
 
     private static void addDepartamento(EmpleadoController econtroler) {
@@ -190,7 +190,7 @@ public class menuEmpleado {
     private static void eliminar(EmpleadoController econtroler) {
         IO.print("Código ? ");
         Integer id = IO.readInt();
-        Empleado e = (Empleado) econtroler.getEmpleadoId(id).get();
+        Empleado e = econtroler.getEmpleadoId(id).get();
         boolean borrado = econtroler.deleteEmpleado(e);
         IO.println(borrado ? "Borrado" : "No se ha podido borrar");
     }

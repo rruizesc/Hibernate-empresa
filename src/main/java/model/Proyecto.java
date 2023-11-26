@@ -31,12 +31,12 @@ public class Proyecto {
 	@Column(nullable = false)
 	private String nombre;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
-	        name = "empleado_proyecto", 
-	        joinColumns = @JoinColumn(name = "proyecto_id"), 
-	        inverseJoinColumns = @JoinColumn(name = "empleado_id") 
-	    )
+			name = "empleado_proyecto",
+			joinColumns = @JoinColumn(name = "empleado_id"),
+			inverseJoinColumns = @JoinColumn(name = "proyecto_id")
+	)
 	private Set<Empleado> empleado = new HashSet<>();
 
 	public Proyecto(Integer id, String nombre) {
@@ -70,4 +70,18 @@ public class Proyecto {
 		 this.getEmpleado().add(e);
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%2d:%-20s", id, nombre));
+		if (empleado == null || empleado.isEmpty()) {
+			sb.append("sin empleados");
+		} else {
+			sb.append("Empleados asignados: ");
+			for (Empleado e : empleado) {
+				sb.append(String.format("[%2d:%s] ", e.getId(), e.getNombre()));
+			}
+		}
+		return sb.toString();
+	}
 }

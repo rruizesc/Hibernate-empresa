@@ -31,7 +31,7 @@ public class EmpleadoController {
 
     public List<Empleado> getEmpleadosSinDepartamento() {
         logger.info("Obteniendo Empleados sin departamento asignado");
-        return empRepositoryImpl.findEmpleadosSinDepartamento();
+        return empRepositoryImpl.findAll();//cambiarlo por empleados sin departamento
     }
 
 
