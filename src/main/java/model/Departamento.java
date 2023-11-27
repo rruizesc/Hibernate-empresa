@@ -27,25 +27,38 @@ public class Departamento {
 	private String nombre;
 	
 	// Relación 1-N con Empleado, un departamento puede tener muchos empleados
-    @OneToMany(mappedBy="departamento")
+    @OneToMany(mappedBy="departamento", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Empleado> empleado = new HashSet<>();
     
     @OneToOne//(mappedBy = "departamentoJefe")
+	@JoinColumn(name = "jefe_id", referencedColumnName = "id")
 	private Empleado jefe;
     
 	public Departamento(Integer id,String nombre) {
 		setId(id);
 		setNombre(nombre);
+		this.empleado = new HashSet<>();
 	}
-	/*
+
 	public void addEmpleado(Empleado e) {
+		if (this.getEmpleado() == null) {
+			this.setEmpleado(new HashSet<>());
+		}
 		this.getEmpleado().add(e);
 		e.setDepartamento(this);
 	}
-	*/
+
+
+
+
 	public void addJefe(Empleado jefe) {
 		this.setJefe(jefe);
 		jefe.setDepartamento(this);
+	}
+
+	public void remove(Empleado empleado) {
+		this.empleado.remove(empleado);
+		empleado.setDepartamento(null);
 	}
 
 	public String show() {

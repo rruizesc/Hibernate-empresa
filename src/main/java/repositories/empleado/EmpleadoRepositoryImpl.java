@@ -4,6 +4,7 @@ import db.HibernateManager;
 import exceptions.DepartamentoException;
 import exceptions.EmpleadoException;
 import jakarta.persistence.TypedQuery;
+import model.Departamento;
 import model.Empleado;
 
 import java.util.List;
@@ -60,12 +61,11 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
         //logger.info("save()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
-        hb.getTransaction().begin();
 
         try {
-            hb.getManager().merge(entity);
+            hb.getTransaction().begin();
+            hb.getManager().persist(entity);
             hb.getTransaction().commit();
-            hb.close();
             return entity;
 
         } catch (Exception e) {
@@ -75,33 +75,40 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
                 hb.getTransaction().rollback();
             }
         }
-
     }
 
     @Override
     public Boolean delete(Empleado entity) {
-        //logger.info("delete()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         try {
             hb.getTransaction().begin();
-            // Ojo que borrar implica que estemos en la misma sesión y nos puede dar problemas, por eso lo recuperamos otra vez
-            entity = hb.getManager().find(Empleado.class, entity.getDepartamento());
-            entity.setDepartamento(null);
-            entity = hb.getManager().find(Empleado.class, entity.getProyecto());
-            entity.setProyecto(null);
-            hb.getManager().remove(entity);
-            save(entity);
+
+            // Obtener la instancia gestionada de la base de datos
+            Empleado empleado = hb.getManager().find(Empleado.class, entity.getId());
+
+            // Antes de eliminar al empleado, manejar las referencias en departamentos
+            if (empleado.getDepartamentoJefe() != null) {
+                // Eliminar al empleado como jefe del departamento
+                Departamento departamento = empleado.getDepartamentoJefe();
+                departamento.setJefe(null);
+                hb.getManager().merge(departamento);
+            }
+
+            // Continuar con la eliminación normal del empleado
+            empleado.delete();
+            hb.getManager().remove(empleado);
             hb.getTransaction().commit();
             hb.close();
             return true;
         } catch (Exception e) {
-            throw new EmpleadoException("Error al eliminar empleado en dpeartamento");
-        } finally {
             if (hb.getTransaction().isActive()) {
                 hb.getTransaction().rollback();
             }
+            throw new EmpleadoException("Error al eliminar empleado");
         }
     }
+
+
 }
 

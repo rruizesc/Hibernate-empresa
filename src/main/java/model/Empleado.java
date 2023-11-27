@@ -52,17 +52,42 @@ public class Empleado {
 		setNombre(nombre);
 		setSalario(salario);
 		setFNacimiento (fNacimiento);
+		this.proyecto = new HashSet<>();
 	}
-	
+
 	public void addDepartamento(Departamento d) {
 		this.setDepartamento(d);
-		d.getEmpleado().add(this);
+		if (d != null) {
+			d.addEmpleado(this);
+		}
 	}
+
 	
 	public void addProyecto(Proyecto p) {
-		this.getProyecto().add(p);
+		if (this.proyecto == null) {
+			this.proyecto = new HashSet<>();
+		}
+		this.proyecto.add(p);
+		if (p.getEmpleado() == null) {
+			p.setEmpleado(new HashSet<>());
+		}
 		p.getEmpleado().add(this);
 	}
+
+
+	public void delete() {
+		if (departamento != null) {
+			departamento.getEmpleado().remove(this);
+			departamento = null;
+		}
+
+		for (Proyecto proyecto : proyecto) {
+			proyecto.getEmpleado().remove(this);
+		}
+		proyecto.clear();
+	}
+
+
 	public String show() {
 		if (id == 0) {
 			return "no empleado!!!";
@@ -87,7 +112,7 @@ public class Empleado {
 	}
 
 	public boolean isNull() {
-		return this == null;
+		return this != null;
 	}
 
 	@Override

@@ -10,8 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static view.Menu.mostrarMenu;
-
 public class menuEmpleado {
     public static void menuEmpleado() {
         //Aquí va el controlador de proyecto:
@@ -54,7 +52,6 @@ public class menuEmpleado {
                     addDepartamento(econtroler);
                     break;
                 case 'S':
-                    mostrarMenu();
                     return;
                 default:
                     System.out.println("Opción no válida");
@@ -90,33 +87,43 @@ public class menuEmpleado {
         IO.print("Código del empleado a modificar ? ");
         Integer id = IO.readInt();
         Optional<Empleado> emp = econtroler.getEmpleadoId(id);
-        if (emp == null) {
+        if (!emp.isPresent()) {
             IO.println("No se ha encontrado al empleado");
             return;
         }
+
         IO.printf("Nombre [%s] ? ", emp.get().getNombre());
         String nombre = IO.readString();
         if (!nombre.isBlank()) {
             emp.get().setNombre(nombre);
         }
+
         IO.printf("Salario [%s] ? ", emp.get().getSalario());
         Double salario = IO.readDoubleOrNull();
         if (salario != null) {
             emp.get().setSalario(salario);
         }
+
         IO.printf("Nacido (aaaa-mm-dd) [%s] ? ", emp.get().getFNacimiento());
         LocalDate nacido = IO.readLocalDateOrNull();
         if (nacido != null) {
             emp.get().setFNacimiento(nacido);
         }
-        IO.printf("Departamento [%s] ? ", emp.get().getDepartamento().show());
+
+        if (emp.get().getDepartamento() != null) {
+            IO.printf("Departamento [%s] ? ", emp.get().getDepartamento().show());
+        } else {
+            IO.print("Departamento [null] ? ");
+        }
         Integer departamento = IO.readIntOrNull();
         if (departamento != null) {
             emp.get().setDepartamento(Departamento.builder().id(departamento).build());
         }
+
         Empleado anadido = econtroler.updateEmpleado(emp.get());
-        IO.println(anadido.isNull() ? "Modificado" : "No se ha podido modificar");
+        IO.println(anadido.isNull() ? "Modificado" : "No se ha podido añadir");
     }
+
 
     private static void crear(EmpleadoController econtroler) {
         IO.print("Nombre ? ");

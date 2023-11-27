@@ -42,6 +42,7 @@ public class Proyecto {
 	public Proyecto(Integer id, String nombre) {
 		setId(id);
 		setNombre(nombre);
+		this.empleado = new HashSet<>();
 	}
 
 	public Object show() {
@@ -66,6 +67,10 @@ public class Proyecto {
 	}
 	
 	public void addEmpleado(Empleado e) {
+		if (this.empleado == null) {
+			this.empleado = new HashSet<>();
+		}
+
 		 e.getProyecto().add(this);
 		 this.getEmpleado().add(e);
 	}

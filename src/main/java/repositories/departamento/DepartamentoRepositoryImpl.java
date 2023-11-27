@@ -96,4 +96,23 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
         }
     }
 
+    @Override
+    public void update(Departamento entity) {
+        HibernateManager hb = HibernateManager.getInstance();
+        hb.open();
+        try {
+            hb.getTransaction().begin();
+            // Actualizar el departamento
+            hb.getManager().merge(entity);
+            hb.getTransaction().commit();
+        } catch (Exception e) {
+            if (hb.getTransaction().isActive()) {
+                hb.getTransaction().rollback();
+            }
+            throw new DepartamentoException("Error al actualizar el departamento");
+        } finally {
+            hb.close();
+        }
+    }
+
 }
