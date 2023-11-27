@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static view.Menu.mostrarMenu;
+
 public class menuEmpleado {
     public static void menuEmpleado() {
         //Aquí va el controlador de proyecto:
@@ -23,7 +25,6 @@ public class menuEmpleado {
                 "moDificar",
                 "Añadir",
                 "añadir a deparTamento",
-                "añadir a Proyecto",
                 "Eliminar",
                 "Salir"
         );
@@ -52,10 +53,8 @@ public class menuEmpleado {
                 case 'T':
                     addDepartamento(econtroler);
                     break;
-                case 'P':
-                    addProyecto(econtroler);
-                    break;
                 case 'S':
+                    mostrarMenu();
                     return;
                 default:
                     System.out.println("Opción no válida");

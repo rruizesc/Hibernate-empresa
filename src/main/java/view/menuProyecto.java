@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static view.Menu.mostrarMenu;
+
 public class menuProyecto {
     public static void menuProyecto() {
 
@@ -53,6 +55,7 @@ public class menuProyecto {
                 case 'R':
                     empleadoAdd(pcontroler);
                 case 'S':
+                    mostrarMenu();
                     return;
                 default:
                     System.out.println("Opción no válida");

@@ -9,12 +9,14 @@ import model.Empleado;
 import java.util.List;
 import java.util.Optional;
 
+import static view.Menu.mostrarMenu;
+
 public class menuDepartamento {
 
     public static void menuDepartamento() {
 
         DepartamentoController dcontroler = new DepartamentoController();
-        System.out.println("Bienvenido al menú de Empleado");
+        System.out.println("Bienvenido al menú de Departamento");
         System.out.println("¿Qué quieres hacer?");
         List<String> option = List.of(
                 "Mostrar",
@@ -51,6 +53,7 @@ public class menuDepartamento {
                     borrar(dcontroler);
                     break;
                 case 'S':
+                    mostrarMenu();
                     return;
                 default:
                     System.out.println("Opción no válida");
