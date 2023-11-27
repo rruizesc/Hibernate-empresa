@@ -141,7 +141,7 @@ public class menuEmpleado {
                 .fNacimiento(nacido)
                 .build();
         Empleado anadido = econtroler.createEmpleado(e);
-        IO.println(anadido.isNull() ? "Añadido" : "No se ha podido añadir");
+        IO.println(anadido.isNull() ? "No se ha podido añadir" : "Añadido");
     }
 
     private static void addDepartamento(EmpleadoController econtroler) {
@@ -167,32 +167,6 @@ public class menuEmpleado {
             IO.println("Departamento añadido al empleado");
         } else {
             IO.println("No se ha podido añadir el departamento al empleado");
-        }
-    }
-
-    private static void addProyecto(EmpleadoController econtroler) {
-        IO.print("Código del empleado al que quieres añadir proyecto ? ");
-        Integer idEmpleado = IO.readInt();
-        Optional<Empleado> empleadoOpt = EmpleadoController.getEmpleadoId(idEmpleado);
-
-        if (empleadoOpt.isEmpty()) {
-            IO.println("Empleado no encontrado");
-            return;
-        }
-
-        Empleado empleado = empleadoOpt.get();
-
-        IO.print("Código del proyecto a añadir ? ");
-        Integer idProyecto = IO.readInt();
-        Proyecto proyecto = Proyecto.builder().id(idProyecto).build();
-
-        empleado.addProyecto(proyecto);
-        Empleado empleadoActualizado = econtroler.updateEmpleado(empleado);
-
-        if (empleadoActualizado.isNull()) {
-            IO.println("Proyecto añadido al empleado");
-        } else {
-            IO.println("No se ha podido añadir el proyecto al empleado");
         }
     }
 

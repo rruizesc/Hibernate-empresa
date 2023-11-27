@@ -112,7 +112,7 @@ public class Empleado {
 	}
 
 	public boolean isNull() {
-		return this != null;
+		return this == null;
 	}
 
 	@Override
