@@ -85,29 +85,40 @@ public class menuDepartamento {
 		}
 	}
 
-	private static void modificar(DepartamentoController dcontroler) {
-		IO.print("Código del departamento a modificar ? ");
-		Integer id = IO.readInt();
-		Optional<Departamento> d = dcontroler.getDepartamentoId(id);
-		if (d == null) {
-			IO.println("No se ha encontrado el departamento");
-			return;
-		}
-		IO.printf("Nombre [%s] ? ", d.get().getNombre());
-		String nombre = IO.readString();
-		if (!nombre.isBlank()) {
-			d.get().setNombre(nombre);
-		}
-		IO.printf("Jefe [%s] ? ", d.get().getJefe().show());
-		Integer jefe = IO.readIntOrNull();
-		if (jefe != null) {
+    private static void modificar(DepartamentoController dcontroler) {
+        IO.print("Código del departamento a modificar ? ");
+        Integer id = IO.readInt();
+        Optional<Departamento> d = dcontroler.getDepartamentoId(id);
+        if (d.isEmpty()) {
+            IO.println("No se ha encontrado el departamento");
+            return;
+        }
+        IO.printf("Nombre [%s] ? ", d.get().getNombre());
+        String nombre = IO.readString();
+        if (!nombre.isBlank()) {
+            d.get().setNombre(nombre);
+        }
 
-			EmpleadoController daoEmpleado = new EmpleadoController();
-			d.get().setJefe(daoEmpleado.getEmpleadoId(jefe).get());
-		}
-		Departamento anadido = dcontroler.crearDepartamento(d.get());
-		IO.println(anadido.isNull() ? "Modificado" : "No se ha podido modificar");
-	}
+        // Permitir establecer o eliminar el jefe
+        IO.printf("¿Establecer jefe? (S/N): ");
+        String respuesta = IO.readString().toUpperCase();
+        if ("S".equals(respuesta)) {
+            IO.printf("Jefe [%s] ? ", d.get().getJefe() != null ? d.get().getJefe().show() : "Ninguno");
+            Integer jefe = IO.readIntOrNull();
+            if (jefe != null) {
+                EmpleadoController daoEmpleado = new EmpleadoController();
+                d.get().setJefe(daoEmpleado.getEmpleadoId(jefe).orElse(null));
+            }
+        } else if ("N".equals(respuesta)) {
+            // Eliminar el jefe
+            d.get().setJefe(null);
+        }
+
+        Departamento modificado = dcontroler.crearDepartamento(d.get());
+        IO.println(modificado.isNull() ? "No se ha podido modificar" : "Modificado");
+    }
+
+
 	private static void anadir(DepartamentoController dcontroler) {
 		IO.print("Nombre ? ");
 		String nombre = IO.readString();
@@ -157,9 +168,11 @@ public class menuDepartamento {
         Departamento departamentoConJefe = dcontroler.updateDepartamento(departamento);
 
         if (departamentoConJefe.isNull()) {
-            IO.println("Se ha asignado el jefe al departamento correctamente.");
-        } else {
             IO.println("No se ha podido asignar el jefe al departamento.");
+            menuDepartamento();
+        } else {
+            IO.println("Se ha asignado el jefe al departamento correctamente.");
+            menuDepartamento();
         }
     }
 

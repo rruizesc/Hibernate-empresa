@@ -5,6 +5,7 @@ import exceptions.DepartamentoException;
 import exceptions.EmpleadoException;
 import jakarta.persistence.TypedQuery;
 import model.Departamento;
+import model.Empleado;
 
 import java.util.List;
 import java.util.Optional;
@@ -74,27 +75,34 @@ public class DepartamentoRepositoryImpl  implements DepartamentoRepository {
 
     @Override
     public Boolean delete(Departamento entity) {
-        //logger.info("delete()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         try {
             hb.getTransaction().begin();
-            // Ojo que borrar implica que estemos en la misma sesión y nos puede dar problemas, por eso lo recuperamos otra vez
-            entity = hb.getManager().find(Departamento.class, entity.getJefe());
-            entity.setJefe(null);
+
+            // Eliminar empleados asociados
+            for (Empleado empleado : entity.getEmpleado()) {
+                empleado.setDepartamento(null);
+                hb.getManager().remove(empleado);
+            }
+
+            // Eliminar el departamento
             hb.getManager().remove(entity);
-            save(entity);
+
             hb.getTransaction().commit();
             hb.close();
             return true;
         } catch (Exception e) {
-            throw new EmpleadoException("Error al eliminar empleado en departamento");
-        } finally {
             if (hb.getTransaction().isActive()) {
                 hb.getTransaction().rollback();
             }
+            throw new DepartamentoException("Error al eliminar el departamento");
         }
     }
+
+
+
+
 
     @Override
     public void update(Departamento entity) {

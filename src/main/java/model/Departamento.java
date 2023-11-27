@@ -58,8 +58,12 @@ public class Departamento {
 
 	public void remove(Empleado empleado) {
 		this.empleado.remove(empleado);
-		empleado.setDepartamento(null);
+		// Comprobamos si el empleado está en la colección antes de desvincular el departamento
+		if (empleado != null && empleado.getDepartamento() == this) {
+			empleado.setDepartamento(null);
+		}
 	}
+
 
 	public String show() {
 		if (id == 0) {
@@ -68,10 +72,11 @@ public class Departamento {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("%2d:%-20s:", id, nombre));
-		if (jefe == null || jefe.getNombre() == null) {
-			sb.append("sin jefe!!");
+
+		if (jefe != null) {
+			sb.append(String.format(" Jefe [%2d:%s]", jefe.getId(), jefe.getNombre()));
 		} else {
-			sb.append(String.format("jefe [%2d:%s]", jefe.getId(), jefe.getNombre()));
+			sb.append(" Sin jefe asignado");
 		}
 
 		return sb.toString();

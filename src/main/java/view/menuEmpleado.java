@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static view.Menu.mostrarMenu;
+
 public class menuEmpleado {
     public static void menuEmpleado() {
         //Aquí va el controlador de proyecto:
@@ -52,6 +54,7 @@ public class menuEmpleado {
                     addDepartamento(econtroler);
                     break;
                 case 'S':
+                    mostrarMenu();
                     return;
                 default:
                     System.out.println("Opción no válida");
@@ -138,7 +141,7 @@ public class menuEmpleado {
                 .fNacimiento(nacido)
                 .build();
         Empleado anadido = econtroler.createEmpleado(e);
-        IO.println(anadido.isNull() ? "No se ha podido añadir" : "Añadido");
+        IO.println(anadido.isNull() ? "Añadido" : "No se ha podido añadir");
     }
 
     private static void addDepartamento(EmpleadoController econtroler) {
