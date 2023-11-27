@@ -47,46 +47,54 @@ public class ProyectoRepositoryImpl  implements ProyectoRepository {
 
     @Override
     public Proyecto save(Proyecto entity) {
-        //logger.info("save()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
-        hb.getTransaction().begin();
 
         try {
-            hb.getManager().merge(entity);
-            hb.getTransaction().commit();
-            hb.close();
-            return entity;
+            hb.getTransaction().begin();
 
+            // Cargar la entidad dentro de la transacción
+            Proyecto persistentEntity = hb.getManager().find(Proyecto.class, entity.getId());
+
+            // Actualizar la entidad persistente
+            if (persistentEntity != null) {
+                persistentEntity.setNombre(entity.getNombre());
+                // Actualiza otros campos según sea necesario
+
+                hb.getManager().merge(persistentEntity);
+            }
+
+            hb.getTransaction().commit();
+            return entity;
         } catch (Exception e) {
-            throw new ProyectoException("Error al proyecto con id: " + entity.getId() + "\n" + e.getMessage());
-        } finally {
             if (hb.getTransaction().isActive()) {
                 hb.getTransaction().rollback();
             }
+            throw new ProyectoException("Error al proyecto con id: " + entity.getId() + "\n" + e.getMessage());
+        } finally {
+            hb.close();
         }
-
     }
 
     @Override
     public Boolean delete(Proyecto entity) {
-        //logger.info("delete()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
         try {
             hb.getTransaction().begin();
-            // Ojo que borrar implica que estemos en la misma sesión y nos puede dar problemas, por eso lo recuperamos otra vez
-            entity = hb.getManager().find(Proyecto.class, findAll());
-            save(entity);
+            // Buscar el proyecto por su ID y eliminarlo directamente
+            entity = hb.getManager().find(Proyecto.class, entity.getId());
+            hb.getManager().remove(entity);
             hb.getTransaction().commit();
-            hb.close();
             return true;
         } catch (Exception e) {
-            throw new EmpleadoException("Error al eliminar empleado en dpeartamento");
-        } finally {
             if (hb.getTransaction().isActive()) {
                 hb.getTransaction().rollback();
             }
+            throw new ProyectoException("Error al eliminar el proyecto");
+        } finally {
+            hb.close();
         }
     }
-}
+
+    }
