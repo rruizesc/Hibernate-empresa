@@ -38,7 +38,7 @@ public class ProyectoController {
     }
 
     public Proyecto updateProyecto(Proyecto proyecto) {
-        logger.info("Actualizando Proyecto con id: " + proyecto.getId());
+       logger.info("Actualizando Proyecto con id: " + proyecto.getId());
         return proyectosRepository.save(proyecto);
     }
 

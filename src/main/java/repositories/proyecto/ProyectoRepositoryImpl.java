@@ -65,8 +65,9 @@ public class ProyectoRepositoryImpl  implements ProyectoRepository {
                 hb.getTransaction().rollback();
             }
         }
-
     }
+
+
 
     @Override
     public Boolean delete(Proyecto entity) {

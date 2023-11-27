@@ -58,16 +58,14 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
 
     @Override
     public Empleado save(Empleado entity) {
-        //logger.info("save()");
         HibernateManager hb = HibernateManager.getInstance();
         hb.open();
 
         try {
             hb.getTransaction().begin();
-            hb.getManager().persist(entity);
+            entity = hb.getManager().merge(entity); // Usar merge en lugar de persist
             hb.getTransaction().commit();
             return entity;
-
         } catch (Exception e) {
             throw new DepartamentoException("Error al empleado con id: " + entity.getId() + "\n" + e.getMessage());
         } finally {
@@ -76,6 +74,7 @@ public class EmpleadoRepositoryImpl  implements EmpleadoRepository {
             }
         }
     }
+
 
     @Override
     public Boolean delete(Empleado entity) {

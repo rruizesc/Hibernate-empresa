@@ -123,22 +123,28 @@ public class menuProyecto {
         }
 	}
 
-    private static void empleadoAdd(ProyectoController pcontroler){
-        IO.print("Código del proyecto al que desea agregar un empleado ");
+    private static void empleadoAdd(ProyectoController pcontroler) {
+        IO.print("Código del proyecto al que desea agregar un empleado: ");
         int idProyecto = IO.readInt();
+
+        // Verificar si el proyecto existe en la base de datos
         Optional<Proyecto> proyectoOptional = pcontroler.getProyectoId(idProyecto);
 
-        if (proyectoOptional.isPresent()){
+        if (proyectoOptional.isPresent()) {
             Proyecto proyecto = proyectoOptional.get();
 
-            IO.print("Código del empleado que desar asociar: ");
+            // Persistir el proyecto si es nuevo o actualizar si ya existe
+            proyecto = pcontroler.updateProyecto(proyecto);
+
+            IO.print("Código del empleado que desea asociar: ");
             int idEmpleado = IO.readInt();
             Optional<Empleado> empleadoOptional = EmpleadoController.getEmpleadoId(idEmpleado);
 
-            if (empleadoOptional.isPresent()){
+            if (empleadoOptional.isPresent()) {
                 Empleado empleado = empleadoOptional.get();
-                proyecto.addEmpleado(empleado);
 
+                // Asociar empleado al proyecto y persistir el proyecto actualizado
+                proyecto.addEmpleado(empleado);
                 pcontroler.updateProyecto(proyecto);
 
                 IO.print("Empleado agregado al proyecto exitosamente.");
@@ -149,7 +155,9 @@ public class menuProyecto {
             IO.print("Proyecto no encontrado.");
         }
     }
-	private static void eliminar(ProyectoController pcontroler) {
+
+
+    private static void eliminar(ProyectoController pcontroler) {
         IO.print("Código del proyecto a eliminar? ");
         Integer id = IO.readInt();
         Optional<Proyecto> proyectoOptional = pcontroler.getProyectoId(id);

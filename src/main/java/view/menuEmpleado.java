@@ -124,7 +124,7 @@ public class menuEmpleado {
         }
 
         Empleado anadido = econtroler.updateEmpleado(emp.get());
-        IO.println(anadido.isNull() ? "Modificado" : "No se ha podido añadir");
+        IO.println(!anadido.isNull() ? "Modificado" : "No se ha podido añadir");
     }
 
 
@@ -163,7 +163,7 @@ public class menuEmpleado {
         empleado.addDepartamento(departamento);
         Empleado empleadoActualizado = econtroler.updateEmpleado(empleado);
 
-        if (empleadoActualizado.isNull()) {
+        if (!empleadoActualizado.isNull()) {
             IO.println("Departamento añadido al empleado");
         } else {
             IO.println("No se ha podido añadir el departamento al empleado");
